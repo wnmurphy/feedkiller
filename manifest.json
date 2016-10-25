@@ -16,7 +16,7 @@
    }, 
   "content_scripts": [ {
       "matches": ["*://*.linkedin.com/*"],
-      "js": [ "jquery.min.js", "feedkiller.js", "popup.js" ],
+      "js": [ "jquery.min.js", "popup.js" ],
       "run_at": "document_end"
    } ],
 
