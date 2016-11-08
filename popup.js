@@ -22,26 +22,7 @@ function elementIsHiddenOnPage () {
 };
 
 
-// Set the initial state of the toggle tracker if it hasn't been set yet, otherwise update page with stored toggle setting if it has.
-chrome.storage.sync.get("toggledOff", function(result){
-
-  // If the flag's never been initialized, initialize it.
-  if(result.toggledOff === undefined){
-    chrome.storage.sync.set({"toggledOff" : null});    
-  
-  // If the element should be toggledOff and it's not already hidden, hide it by toggling.
-  } else if (result.toggledOff === true && !elementIsHiddenOnPage) {
-    injectTheScript();
-
-  // If the element should not be toggledOff but it is already hidden, unhide it by toggling.
-  } else if (result.toggledOff === false && elementIsHiddenOnPage) {
-    injectTheScript();
-  }
-
-});
-
-
-// After DOM content loads, add an event listener for the button in popup.html and bind button to toggle behavior.
+// After DOM content loads, add an event listener for the button in popup.html and toggle behavior to button.
 document.addEventListener('DOMContentLoaded', function () {
 
     // Let's see what's getting set in storage.
@@ -55,9 +36,13 @@ document.addEventListener('DOMContentLoaded', function () {
       // Inject toggling script to browser tab.
       injectTheScript();
 
-      // Flip value of flag in both storage and global variable.
+      // Flip value of the flag in storage.
       chrome.storage.sync.set({"toggledOff" : !elementIsHiddenOnPage});
 
-      console.log("globalToggledOff var on click is:");
+      // Log out what's in storage to verify click updated storage correctly.
+      chrome.storage.sync.get("toggledOff", function(result){
+        console.log("Getter gets:");
+        console.log(result.toggledOff);
+      });
     });
 });
